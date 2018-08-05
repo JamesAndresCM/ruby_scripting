@@ -115,3 +115,6 @@ def get_data_patente(data)
                             Conductores: conductores]
   )
 end
+
+#production server
+set :bind, '0.0.0.0'
