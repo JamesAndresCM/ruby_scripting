@@ -30,12 +30,11 @@ def set_params(patente)
 end
 
 def get_data_patente(data)
-  halt(500, { status: 500,message:'Error interno en el servidor!'}.to_json) unless data.code.eql?("200")
+  { status: 500,message:'Error interno en el servidor!'}.to_json unless data.code.eql?("200")
   page = Nokogiri::HTML(data.body)
 
   #datos vehiculo
   fecha_informe =  page.css('div.fecha #MainContent_fechaInforme').text.rstrip
-  halt(404, { status: 404,message:'Patente no valida!!'}.to_json) if fecha_informe.empty?
   patente_vehiculo =  page.css('#MainContent_patenteT').text.rstrip
   fecha_entrada_RNT =  page.css('#MainContent_FechaIngresoRNT').text.rstrip
   tipo_servicio =  page.css('#MainContent_tipo_servicio').text.rstrip
@@ -77,12 +76,16 @@ def get_data_patente(data)
   r_cancelacion = page.css('#MainContent_reemplazadoPor').text
   conductores = page.css('#MainContent_conductores span').text.rstrip
 
+  if fecha_informe.empty?
+  { status: 404,message:'Patente no encontrada!'}.to_json
+    else
   JSON.pretty_generate('Resultado Patente' =>
                            [Vehiculo: datos_vehiculo,
                             Datos_Servicio: datos_servicio,
                             Estado: r_cancelacion,
                             Conductores: conductores]
   )
+    end
 end
 end
 
