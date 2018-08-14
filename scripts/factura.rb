@@ -27,18 +27,10 @@ class Persona
 end
 
 # clase cliente hereda de persona
-class Cliente < Persona
-	def initialize(nombre,apellido,grupo)
-		super
-	end
-end
+class Cliente < Persona; end
 
 # clase deudor hereda de persona
-class Deudor < Persona
-	def initialize(nombre,apellido,grupo)
-		super
-	end
-end
+class Deudor < Persona; end
 
 # declaro constante para "grupos"
 GRUPOS = ["grupo1","grupo2","grupo3","grupo4","grupo5","grupo6"]
@@ -52,7 +44,7 @@ clientes_deudores = []
 facturas = []
 
 
-# creo 5 clientes y 5 deudores, luego los meto en el array declarado previamente, con "grupos" randoms para c/u
+# creo 30 clientes y 30 deudores, luego los meto en el array declarado previamente, con "grupos" randoms para c/u
 30.times do |x|
 	cliente = Cliente.new("cliente numero#{x}","cliente apellido#{x}",GRUPOS.sample)
 	deudor = Deudor.new("deudor numero#{x}","deudor apellido#{x}",GRUPOS.sample)
