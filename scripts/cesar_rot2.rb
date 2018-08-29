@@ -6,7 +6,7 @@ def convert(n)
   abort("#{value.join} error solo letras") unless value.join =~ /^[a-z]+$/
 	value.each do |pos| 
 		if pos.eql? 'z'
-		  pos='a'
+			pos='a'
     	res=letters.index(pos) + 1
 		elsif pos.eql? 'y'
 			pos='a'
