@@ -1,5 +1,4 @@
 class Array
-
   def slice_number_method(n)
     return self if self.size <= 1 
     not_in_arr = []
@@ -16,5 +15,6 @@ class Array
     temp_arr.delete_if{|del| !del.is_a? Array }
   end
 end
+
  range = (1..13).to_a
  p range.slice_number_method(3)
