@@ -10,9 +10,9 @@ class Array
       temp_arr << last_num if last_num > temp_arr.flatten.last
     end
 
-    temp_arr.each{|x|  not_in_arr << x unless x.is_a? Array }
+    temp_arr.each{|x|  not_in_arr << x unless x.is_a? self.class }
     temp_arr.push(not_in_arr) unless not_in_arr.empty?
-    temp_arr.delete_if{|del| !del.is_a? Array }
+    temp_arr.delete_if{|del| !del.is_a? self.class }
   end
 end
 
