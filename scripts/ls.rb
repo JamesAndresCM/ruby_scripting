@@ -26,7 +26,8 @@ def is_file_or_dir(f)
   when File.directory?(f)
     'directory'
   else
-    abort("#{f} is not file or directory... exit")
+  puts "#{f} is not file or directory"
+  exit
   end
 end
 
@@ -54,7 +55,7 @@ case
   when ARGV.length.eql?(1)
   puts current_path(ARGV[0])
   when ARGV.length > 1
-  abort("Only one argument... not #{ARGV.length}")
+  puts "Only one argument... not #{ARGV.length}"
   else
   puts "Usage : #{$0} argv"
 end
