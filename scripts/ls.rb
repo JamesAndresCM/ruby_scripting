@@ -1,13 +1,19 @@
 #encoding: UTF-8
-
 require 'etc'
 require 'json'
 
+class FileException < StandardError
+  attr_accessor :message
+  def initialize(message)
+    @message = message
+  end
+end
+
+class ArgvException < StandardError; end
 
 def _file(f)
   File.stat(f)
 end
-
 
 def filesize(size)
   units = %w(B KiB MiB GiB TiB Pib EiB)
@@ -26,8 +32,7 @@ def is_file_or_dir(f)
   when File.directory?(f)
     'directory'
   else
-  puts "#{f} is not file or directory"
-  exit
+    raise FileException.new("#{f} is not file or directory")
   end
 end
 
@@ -37,6 +42,7 @@ def parse_path(path)
 end
 
 def current_path(argv_path)    
+  begin
     final_path = parse_path(argv_path)
     result = Dir.glob(final_path, File::FNM_DOTMATCH).sort.map do |f| 
       {
@@ -48,15 +54,22 @@ def current_path(argv_path)
         size: "#{(filesize(File.size(f)))}"
       }
     end
-    JSON.pretty_generate(result)
+    puts JSON.pretty_generate(result)
+  rescue FileException => e
+    puts "#{e.message}"
+  end
 end
 
-case 
-  when ARGV.length.eql?(1)
-  puts current_path(ARGV[0])
-  when ARGV.length > 1
-  puts "Only one argument... not #{ARGV.length}"
-  else
-  puts "Usage : #{$0} argv"
+begin
+  case 
+    when ARGV.length.eql?(1)
+    current_path(ARGV[0])
+    when ARGV.length > 1
+    raise ArgvException, "Only one argument not #{ARGV.length}"
+    else
+      puts "Usage : #{$0} argv"
+    end
+rescue ArgvException => e
+  puts "#{e.message}"
 end
 
