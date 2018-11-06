@@ -125,7 +125,7 @@ end
 begin
   optparse.parse!
   if options[:from] and options[:to] and options[:text]
-    puts "\nText: #{options[:text]}\nFrom: #{options[:from].capitalize}\nTo: #{options[:to].capitalize}\n\nTranslate :#{translator.translate(options[:from],options[:to],options[:text])}"
+    puts "\nText: #{options[:text]}\nFrom: #{options[:from].capitalize}\nTo: #{options[:to].capitalize}\n\nTranslate: #{translator.translate(options[:from],options[:to],options[:text])}\n\n"
   else
     puts optparse
     exit
