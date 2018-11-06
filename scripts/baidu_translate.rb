@@ -55,7 +55,18 @@ class BaiduTranslate
   def send_post
     salt = rand(10000..50000)
     sign = auth(app_id, query, salt, secret_key)
-    uri = URI.parse("#{API_URL}?appid=#{app_id}&q=#{query}&from=#{from}&to=#{to}&salt=#{salt}&sign=#{sign}")
+
+    params = {
+        appid: app_id,
+        q: query,
+        from: from,
+        to: to,
+        salt: salt,
+        sign: sign,
+    }
+
+    uri_with_params = "#{API_URL}?#{URI.encode_www_form(params)}"
+    uri = URI.parse(uri_with_params)
     response = Net::HTTP.get_response(uri).body
 
     error = JSON.parse(response)["error_code"]
@@ -125,7 +136,7 @@ end
 begin
   optparse.parse!
   if options[:from] and options[:to] and options[:text]
-    puts "\nText: #{options[:text]}\nFrom: #{options[:from].capitalize}\nTo: #{options[:to].capitalize}\n\nTranslate: #{translator.translate(options[:from],options[:to],options[:text])}\n\n"
+    puts "\nText: #{options[:text]}\n\nFrom: #{options[:from].capitalize}\n\nTo: #{options[:to].capitalize}\n\nTranslate: #{translator.translate(options[:from],options[:to],options[:text])}\n\n"
   else
     puts optparse
     exit
