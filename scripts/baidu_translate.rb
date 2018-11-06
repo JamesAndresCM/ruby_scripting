@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'net/http'
 require 'uri'
 require 'json'
@@ -76,7 +78,7 @@ ARGV << '-h' if ARGV.empty?
 options = {}
 
 optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: #{$0} [options]\nExample: #{$0} --from=en --to=spa --text=hello"
+  opts.banner = "Usage: #{File.basename($0)} [options]\nExample: #{File.basename($0)} --from=en --to=spa --text=hello"
 
   opts.on('--from LANG', 'From Lang') do |f|
     options[:from] = f
