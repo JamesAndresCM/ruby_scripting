@@ -76,7 +76,7 @@ ARGV << '-h' if ARGV.empty?
 options = {}
 
 optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: #{$0} [options]"
+  opts.banner = "Usage: #{$0} [options]\nExample: #{$0} --from=en --to=spa --text=hello"
 
   opts.on('--from LANG', 'From Lang') do |f|
     options[:from] = f
@@ -114,7 +114,7 @@ optparse = OptionParser.new do |opts|
   opts.on('-l','--lang', 'Display langs') do |l|
     options[:lang] = l
     puts optparse
-    puts "Langs : #{langs}" if options[:lang]
+    puts "\nLangs :",langs.join(' ') if options[:lang]
     exit
   end
   opts.on( '-h', '--help', 'Display this screen' ){ puts opts; exit }
