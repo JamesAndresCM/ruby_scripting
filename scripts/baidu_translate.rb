@@ -24,6 +24,7 @@ class String
 end
 
 class AuthError < StandardError; end
+class LangError < StandardError; end
 
 class BaiduTranslate
   include SaltAuth
@@ -39,6 +40,8 @@ class BaiduTranslate
     @from = from
     @to = to
     @query = query
+    raise LangError, "Lang to :#{@to} not available".red unless language_args.include?(@to)
+    raise LangError, "Lang from :#{@from} not available".red unless language_args.include?(@from)
     begin
       send_post
     rescue AuthError => e
@@ -56,17 +59,22 @@ class BaiduTranslate
     salt = rand(10000..50000)
     sign = auth(app_id, query, salt, secret_key)
 
-    params = {
+    begin
+      params = {
         appid: app_id,
         q: query,
         from: from,
         to: to,
         salt: salt,
         sign: sign,
-    }
+      }
 
-    uri_with_params = "#{API_URL}?#{URI.encode_www_form(params)}"
-    uri = URI.parse(uri_with_params)
+      uri_with_params = "#{API_URL}?#{URI.encode_www_form(params)}"
+      uri = URI.parse(uri_with_params)
+      rescue LangError => e
+        puts "#{e.message}"
+    end
+    
     response = Net::HTTP.get_response(uri).body
 
     error = JSON.parse(response)["error_code"]
@@ -79,6 +87,7 @@ class BaiduTranslate
 end
 
 #Get your app_id!! http://api.fanyi.baidu.com/api/trans/product/index
+
 
 translator = BaiduTranslate.new(your_app_id,your_secret_key)
 langs = translator.language_args
@@ -97,10 +106,6 @@ optparse = OptionParser.new do |opts|
       puts optparse
       puts 'Param --from is required'.red
       exit
-    elsif !langs.include?(options[:from])
-      puts optparse
-      puts "from: #{options[:from].red} not valid language"
-      exit
     end
   end
 
@@ -109,10 +114,6 @@ optparse = OptionParser.new do |opts|
     if options[:to].empty?
       puts optparse
       puts 'Param --to is required'.red
-      exit
-    elsif !langs.include?(options[:to])
-      puts optparse
-      puts "to: #{options[:to].red} not valid language"
       exit
     end
   end
