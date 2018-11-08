@@ -2,6 +2,7 @@ require 'resolv'
 require 'optparse'
 
 class IpError < StandardError; end
+
 class IsValidIP
   def valid_ip?(ip_address)
     result = !!(ip_address =~ Regexp.union([Resolv::IPv4::Regex, Resolv::IPv6::Regex]))
@@ -36,6 +37,7 @@ class BlacklistIp
       spam.dnsbl.sorbs.net
     ]
   end
+
   private 
 
   def check_centrals(ip_address)
