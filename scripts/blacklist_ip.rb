@@ -10,56 +10,57 @@ class IsValidIP
   end
 end
 class BlacklistIp
-  attr_accessor :ip_address
+  class << self
+    attr_accessor :ip_address
 
-  def check_ip(ip_address)
-    @ip_address = ip_address
-    begin
-      check_valid = IsValidIP.new
-      check_valid.valid_ip?(ip_address)
-      check_centrals(ip_address)  
-    rescue IpError => e
-      puts "#{e.message}"
-    end     
-  end
-  
-  def centrals
-    %w[
-      b.barracudacentral.org
-      bl.spamcop.net
-      cbl.abuseat.org
-      dnsbl.sorbs.net
-      spam.dnsbl.sorbs.net
-      spam.spamrats.com
-      zen.spamhaus.org
-      bl.spamcannibal.org
-      smtp.dnsbl.sorbs.net
-      spam.dnsbl.sorbs.net
-    ]
-  end
-
-  private 
-
-  def check_centrals(ip_address)
-    listed = []
-    ip_address = ip_address.split('.').reverse.join('.')
-    begin
-    centrals.each do |central|
-      host = "#{ip_address}.#{central}"
-      Resolv::getaddress(host)
-      listed << central
-      rescue => e
-        e
-        #puts "ip_address: #{ip_address} in central: #{central} is "+"\e[32mOK\e[0m"
-      end
+    def check_ip(ip_address)
+      @ip_address = ip_address
+      begin
+        check_valid = IsValidIP.new
+        check_valid.valid_ip?(ip_address)
+        check_centrals(ip_address)  
+      rescue IpError => e
+        puts "#{e.message}"
+      end     
     end
-    listed.size > 0 ? listed : "#{@ip_address} is OK"
+  
+    def centrals
+      %w[
+        b.barracudacentral.org
+        bl.spamcop.net
+        cbl.abuseat.org
+        dnsbl.sorbs.net
+        spam.dnsbl.sorbs.net
+        spam.spamrats.com
+        zen.spamhaus.org
+        bl.spamcannibal.org
+        smtp.dnsbl.sorbs.net
+        spam.dnsbl.sorbs.net
+      ]
+    end
+
+    private 
+
+    def check_centrals(ip_address)
+      listed = []
+      ip_address = ip_address.split('.').reverse.join('.')
+      begin
+      centrals.each do |central|
+        host = "#{ip_address}.#{central}"
+        Resolv::getaddress(host)
+        listed << central
+        rescue => e
+          e
+          #puts "ip_address: #{ip_address} in central: #{central} is "+"\e[32mOK\e[0m"
+        end
+      end
+      listed.size > 0 ? listed : "#{@ip_address} is OK"
+    end
   end
 end
 
 
-blacklist = BlacklistIp.new
-centrals = blacklist.centrals
+centrals = BlacklistIp.centrals
 
 ARGV << '-h' if ARGV.empty?
 
@@ -86,8 +87,9 @@ end
 
 begin
   optparse.parse!
+  puts " Please wait ".center(40,"*")
   if options[:ip_address]
-    response = blacklist.check_ip(options[:ip_address])
+    response = BlacklistIp.check_ip(options[:ip_address])
     if response.is_a? Array
       puts "Ip address: #{options[:ip_address]} is blacklisted in :"
       puts response.join("\n")
