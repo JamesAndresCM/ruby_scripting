@@ -34,7 +34,7 @@ class Rut
 
   def is_valid?(dv)
     raise FailFormat, 'Error only numbers' unless dv.is_a?(Integer)
-    raise FailFormat, 'Error not valid size (8 digits required)' unless dv.digits.size.eql?(8)
+    raise FailFormat, 'Error not valid size digits' unless dv.digits.size.between?(7,8)
   end
 
   def dv_format_ouptut(res,input)
