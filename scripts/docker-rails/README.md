@@ -1,11 +1,17 @@
+### POC docker-rails
+
 ### Create some proyect (flag -d postgresql obligatory) in host (app container port 8080)
 - `rails new test_docker -d postgresql`
 
 ### Copy these files to previous proyect
-- `cp -r ....`
+- `cp -r test_docker/* . && cp test_docker/.ruby-version .`
 
 ### Set variables
 - `bash basename.sh`
+
+### Set ruby version
+- `ruby -v`
+- paste result into Dockerfile puma: example ruby:2.6.3
 
 ### Setup
 - `docker-compose build`
