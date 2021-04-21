@@ -7,7 +7,8 @@
 - `cp -r test_docker/* . && cp test_docker/.ruby-version .`
 
 ### Set variables
-- `bash basename.sh`
+- Add or Remove Comments in `basename.sh` file, it's depends is your OS (Mac or Linux)
+- execute: `bash basename.sh`
 
 ### Set ruby version
 - `ruby -v`
