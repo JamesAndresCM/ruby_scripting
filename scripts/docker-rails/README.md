@@ -11,7 +11,7 @@
 
 ### Set ruby version
 - `ruby -v`
-- paste result into Dockerfile puma: example ruby:2.6.3
+- paste your result in top file (`docker/app/Dockerfile`): example `ruby:2.6.3`
 
 ### Setup
 - `docker-compose build`
