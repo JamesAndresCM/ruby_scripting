@@ -3,8 +3,9 @@ FROM ruby
 #no verbose output
 ENV DEBIAN_FRONTEND noninteractive
 
-#install packages and clean 
-RUN apt-get update -qq && apt-get install -y build-essential vim libpq-dev nodejs imagemagick \
+RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update -qq && apt-get install -y build-essential vim yarn libpq-dev nodejs imagemagick \
         && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #apps directory
