@@ -1,3 +1,4 @@
+# https://codeo.app/problemas/0xcf-mirando-al-horizonte
 roofs = [4, 2, 1, 6, 3, 2, 5, 3, 1, 4]
 aux = []
 roofs.each_with_index do |roof, original_index|
